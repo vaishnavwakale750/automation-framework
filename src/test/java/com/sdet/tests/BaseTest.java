@@ -1,5 +1,6 @@
 package com.sdet.tests;
 
+import com.sdet.config.ConfigManager;
 import com.sdet.core.DriverFactory;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterMethod;
@@ -11,12 +12,15 @@ public class BaseTest {
 
     @BeforeMethod
     public void setUp() {
+
         driver = DriverFactory.initDriver();
-        driver.get("https://www.saucedemo.com");
+
+        driver.get(ConfigManager.getProperty("baseUrl"));
     }
 
     @AfterMethod
     public void tearDown() {
+
         DriverFactory.quitDriver();
     }
 }
