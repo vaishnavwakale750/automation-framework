@@ -12,17 +12,23 @@ import org.testng.Assert;
 
 public class LoginSteps {
 
-    private WebDriver driver = DriverFactory.getDriver();
-    private LoginPage loginPage = new LoginPage(driver);
+    private WebDriver driver;
+    private LoginPage loginPage;
 
     @Step("Open application URL")
     @Given("user is on login page")
     public void user_is_on_login_page() {
 
+        // Ensure driver is initialized (Hooks.beforeScenario should normally do this)
         driver = DriverFactory.getDriver();
 
         if (driver == null) {
             driver = DriverFactory.initDriver();
+        }
+
+        // initialize page objects after driver is ready
+        if (loginPage == null) {
+            loginPage = new LoginPage(driver);
         }
 
         // ✅ IMPORTANT checkpoint
