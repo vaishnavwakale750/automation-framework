@@ -1,6 +1,12 @@
 Feature: Login functionality
 
-  Scenario: Verify login page title
 
+  @smoke @login
+  Scenario: Verify login page
     Given user is on login page
     Then page title should contain "Swag"
+
+  @regression @login
+  Scenario: Verify invalid login
+    Given user is on login page
+    Then page title should contain "Invalid"

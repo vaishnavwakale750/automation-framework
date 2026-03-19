@@ -8,7 +8,7 @@ import org.openqa.selenium.edge.EdgeDriver;
 
 public class DriverFactory {
 
-    private static WebDriver driver;
+    private static ThreadLocal<WebDriver> driver = new ThreadLocal<>();
 
     public static WebDriver initDriver() {
 
@@ -17,33 +17,37 @@ public class DriverFactory {
         switch (browser.toLowerCase()) {
 
             case "chrome":
-                driver = new ChromeDriver();
+                driver.set(new ChromeDriver());
                 break;
 
             case "firefox":
-                driver = new FirefoxDriver();
+                driver.set(new FirefoxDriver());
                 break;
 
             case "edge":
-                driver = new EdgeDriver();
+                driver.set(new EdgeDriver());
                 break;
 
             default:
                 throw new RuntimeException("Unsupported browser: " + browser);
         }
 
-        driver.manage().window().maximize();
-        return driver;
+        WebDriver wd = driver.get();
+        wd.manage().window().maximize();
+
+        return wd;
     }
 
     public static WebDriver getDriver() {
-        return driver;
+        return driver.get();
     }
 
     public static void quitDriver() {
+        WebDriver wd = driver.get();
 
-        if (driver != null) {
-            driver.quit();
+        if (wd != null) {
+            wd.quit();
+            driver.remove();   // 🔥 VERY IMPORTANT
         }
     }
 }
