@@ -9,4 +9,5 @@ Feature: Login functionality
   @regression @login
   Scenario: Verify invalid login
     Given user is on login page
-    Then page title should contain "Invalid"
+    When user enters invalid credentials
+    Then error message should be displayed
